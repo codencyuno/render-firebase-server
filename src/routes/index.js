@@ -4,7 +4,10 @@ const { authMiddleware } = require("../middlewares/auth");
 const upload = require("../utils/upload");
 
 // Public
-router.get("/", (_, res) => res.send("Server OK"));
+
+router.get("/", (req, res) => {
+  res.send("✅ Backend is running fine!");
+});
 
 // Authenticated route
 router.get("/messages", authMiddleware, async (_, res) => {
