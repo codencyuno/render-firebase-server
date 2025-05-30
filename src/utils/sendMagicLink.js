@@ -12,12 +12,18 @@ const transporter = nodemailer.createTransport({
 
 async function sendMagicLink(email, token) {
   const link = `${process.env.FRONTEND_URL}/magic-login?token=${token}`;
-  await transporter.sendMail({
-    from: `"Login Bot" <${process.env.ZMAIL_USER}>`,
-    to: email,
-    subject: "Your Magic Login Link",
-    html: `<p><a href="${link}">Click here to login</a> (expires in 15 min)</p>`,
-  });
+  try {
+    await transporter.sendMail({
+      from: `"Codency Uno" <${process.env.ZMAIL_USER}>`,
+      to: email,
+      subject: "Your Magic Login Link",
+      html: `<p><a href="${link}">Click here to login</a> (expires in 15 min)</p>`,
+    });
+    return "Magic link sent! Please check your email.";
+  } catch (error) {
+    console.error("Error sending magic link:", error);
+    throw new Error("Failed to send magic link. Please try again.");
+  }
 }
 
 module.exports = sendMagicLink;
