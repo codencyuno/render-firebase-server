@@ -2,7 +2,8 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const sendMagicLink = require("../utils/sendMagicLink");
-const db = require("../firebase").database();
+const admin = require("../config/firebase"); // ✅ Correct relative path
+const db = admin.database();
 const { v4: uuid } = require("uuid");
 
 router.get("/auth/verify", async (req, res) => {
