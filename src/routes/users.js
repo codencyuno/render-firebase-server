@@ -1,16 +1,16 @@
 const router = require("express").Router();
-const { authMiddleware } = require("../middleware/auth");
 const db = require("firebase-admin").database();
+const { authMiddleware } = require("../middleware/authMiddleware");
 
 router.get("/users/me", authMiddleware, async (req, res) => {
-  const userRef = db.ref(`users/${req.user.userId}`);
-  const snapshot = await userRef.once("value");
+  const { email } = req.user;
+  const usersRef = db.ref("users");
+  const snap = await usersRef.orderByChild("email").equalTo(email).once("value");
 
-  if (!snapshot.exists()) {
-    return res.status(404).send("User not found");
-  }
+  if (!snap.exists()) return res.status(404).send("User not found");
 
-  res.send(snapshot.val());
+  const userData = Object.values(snap.val())[0];
+  res.json(userData);
 });
 
 module.exports = router;
