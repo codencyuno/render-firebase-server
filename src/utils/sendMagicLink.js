@@ -33,7 +33,7 @@ async function sendMagicLink(email, token) {
         }
         .outer-container {
             background-color: #FAFAF5;
-            padding: 40px 20px;
+            padding: 10px 20px;
         }
         .container {
             max-width: 600px;
