@@ -113,7 +113,7 @@ async function sendMagicLink(email, token) {
         </div>
           <div class="social-icons">
               <a href="#">Facebook</a>
-              <a href="#">Twitter</a>
+              <a href="#">Instagram</a>
           </div>
           
           <div class="footer">
