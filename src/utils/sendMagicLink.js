@@ -16,13 +16,13 @@ async function sendMagicLink(email, token) {
     await transporter.sendMail({
       from: `"Codency Uno" <${process.env.ZMAIL_USER}>`,
       to: email,
-      subject: "Your Magic Login Link",
+      subject: "Please verify your email",
       html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codency Uno Magic Link</title>
+    <title>Codency Uno Verification Link</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -31,7 +31,6 @@ async function sendMagicLink(email, token) {
             margin: 0;
             padding: 20px;
             color: #1B1B1B;
-            text-align: center;
         }
         .container {
             max-width: 600px;
@@ -42,6 +41,7 @@ async function sendMagicLink(email, token) {
             box-shadow: 0 2px 10px rgba(176, 176, 176, 0.1);
         }
         .logo {
+            text-align: center;
             margin-bottom: 15px;
         }
         .logo img {
@@ -49,6 +49,7 @@ async function sendMagicLink(email, token) {
             height: auto;
         }
         .magic-link {
+            text-align: center;
             margin: 15px 0;
         }
         .magic-link a {
@@ -66,22 +67,26 @@ async function sendMagicLink(email, token) {
             box-shadow: 0 4px 15px rgba(198, 146, 44, 0.3);
         }
         .footer {
+            text-align: center;
             margin-top: 10px;
             color: #B0B0B0;
             font-size: 14px;
         }
         .help-text {
+            text-align: center;
             margin-top: 20px;
             margin-bottom: 10px;
             color: #666;
             font-size: 14px;
         }
         .copyright {
+            text-align: center;
             margin-top: 5px;
             color: #B0B0B0;
             font-size: 12px;
         }
         .social-icons {
+            text-align: center;
             margin: 10px 0;
         }
         .social-icons a {
@@ -94,11 +99,22 @@ async function sendMagicLink(email, token) {
             content: '|';
             margin-left: 20px;
         }
+        img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2, p {
+            text-align: center;
+        }
+        .made-with-love {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="https://www.codency.uno/assets/images/logo-invisible.png" alt="Codency Uno Logo" style="width: 120px; height: auto; margin-bottom: 15px;">
+        <img src="https://www.codency.uno/assets/images/logo-transparent-bg.png" alt="Codency Uno Logo" style="width: 120px; height: auto; margin-bottom: 15px;">
         
         <div class="magic-link">
             <h2>Please verify your email</h2>
@@ -113,7 +129,7 @@ async function sendMagicLink(email, token) {
         </div>
           <div class="social-icons">
               <a href="#">Facebook</a>
-              <a href="#">Instagram</a>
+              <a href="#">Twitter</a>
           </div>
           
           <div class="footer">
