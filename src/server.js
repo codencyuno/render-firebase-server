@@ -4,6 +4,8 @@ const { Server } = require("socket.io");
 const { setupSockets } = require("./sockets");
 require("dotenv").config();
 
+app.use("/api", authRoutes); // mounts /api/auth/request
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
