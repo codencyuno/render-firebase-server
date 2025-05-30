@@ -7,7 +7,7 @@ const admin = require("../config/firebase");
 const db = admin.database();
 const { v4: uuid } = require("uuid");
 
-router.post("/auth/request", async (req, res) => {
+router.post("/request", async (req, res) => {
   const { email } = req.body;
   try {
     const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "15m" });
@@ -18,7 +18,7 @@ router.post("/auth/request", async (req, res) => {
   }
 });
 
-router.get("/auth/verify", async (req, res) => {
+router.get("/verify", async (req, res) => {
   const { token } = req.query;
   try {
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
