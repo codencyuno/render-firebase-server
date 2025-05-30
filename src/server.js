@@ -2,10 +2,12 @@ const http = require("http");
 const app = require("./app");
 const { Server } = require("socket.io");
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/users");
 const { setupSockets } = require("./sockets");
 require("dotenv").config();
 
 app.use("/api", authRoutes); // mounts /api/auth/request
+app.use("/api", userRoutes);
 
 const server = http.createServer(app);
 const io = new Server(server, {
