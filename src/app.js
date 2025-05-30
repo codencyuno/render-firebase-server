@@ -14,6 +14,11 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  res.send("👋 Hello! This is the root of your server.");
+});
+
+
 // Routes
 app.use("/api", require("./routes"));
 
