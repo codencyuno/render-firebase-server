@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../firebase").database();
+const admin = require("../config/firebase"); // ✅ Correct relative path
+const db = admin.database();
 const { authMiddleware } = require("../middlewares/authMiddleware");
 
 router.get("/users/me", authMiddleware, async (req, res) => {
