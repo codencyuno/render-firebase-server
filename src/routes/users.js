@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const db = require("firebase-admin").database();
-const { authMiddleware } = require("../middleware/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 router.get("/users/me", authMiddleware, async (req, res) => {
   const { email } = req.user;
