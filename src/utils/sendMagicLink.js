@@ -27,10 +27,13 @@ async function sendMagicLink(email, token) {
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #FAFAF5;
             margin: 0;
-            padding: 20px;
+            padding: 5px;
             color: #1B1B1B;
+        }
+        .outer-container {
+            background-color: #FAFAF5;
+            padding: 40px 20px;
         }
         .container {
             max-width: 600px;
@@ -98,28 +101,30 @@ async function sendMagicLink(email, token) {
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <img src="https://www.codency.uno/assets/images/logo-transparent-bg.png" alt="Codency Uno Logo" style="width: 120px; height: auto; margin-bottom: 15px;">
-            
-            <div class="magic-link">
-                <h2>Please verify your email</h2>
-                <p>Click the button below to access your account.</p>
-                <p>You can manage your content here.</p>
-                <p><a href="${link}">Verify</a></p>
-                <p style="color: #B0B0B0; font-size: 13px;">(expires in 15 min)</p>
-            </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="card">
+                <img src="https://www.codency.uno/assets/images/logo-transparent-bg.png" alt="Codency Uno Logo" style="width: 120px; height: auto; margin-bottom: 15px;">
+                
+                <div class="magic-link">
+                    <h2>Please verify your email</h2>
+                    <p>Click the button below to access your account.</p>
+                    <p>You can manage your content here.</p>
+                    <p><a href="${link}">Verify</a></p>
+                    <p style="color: #B0B0B0; font-size: 13px;">(expires in 15 min)</p>
+                </div>
 
-            <div class="help-text">
-                Need some help? Just reply to this email.
+                <div class="help-text">
+                    Need some help? Just reply to this email.
+                </div>
             </div>
-        </div>
-        
-        <div class="made-with-love">
-            Made with <span>💜</span> in Delaware
-        </div>
-        <div class="copyright">
-            © Codency.uno
+            
+            <div class="made-with-love">
+                Made with <span>💜</span> in Delaware
+            </div>
+            <div class="copyright">
+                © Codency.uno
+            </div>
         </div>
     </div>
 </body>
