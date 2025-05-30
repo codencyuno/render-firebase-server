@@ -79,3 +79,5 @@ router.get("/users/me", async (req, res) => {
     res.status(401).send("Invalid token");
   }
 });
+
+module.exports = router;
