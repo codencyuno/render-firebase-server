@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendMagicLink(email, token) {
-  const link = `${process.env.FRONTEND_URL}/magic-login?token=${token}`;
+  const link = `${process.env.BACKEND_URL}/magic-login?token=${token}`;
   try {
     await transporter.sendMail({
       from: `"Codency Uno" <${process.env.ZMAIL_USER}>`,
