@@ -2,9 +2,21 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const sendMagicLink = require("../utils/sendMagicLink");
-const admin = require("../config/firebase"); // ✅ Correct relative path
+
+const admin = require("../config/firebase");
 const db = admin.database();
 const { v4: uuid } = require("uuid");
+
+router.post("/auth/request", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "15m" });
+    const message = await sendMagicLink(email, token);
+    res.send(message);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
 
 router.get("/auth/verify", async (req, res) => {
   const { token } = req.query;
