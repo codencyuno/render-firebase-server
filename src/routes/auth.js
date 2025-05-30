@@ -63,7 +63,7 @@ router.get("/auth/verify", async (req, res) => {
     }
 
     const loginToken = jwt.sign({ email, userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${loginToken}`);
+    res.redirect(`${process.env.FRONTEND_URL}?token=${loginToken}`);
   } catch (err) {
     res.status(400).send("⛔ Invalid or expired token");
   }
