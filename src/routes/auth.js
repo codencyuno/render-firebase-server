@@ -2,6 +2,7 @@ const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const sendMagicLink = require("../utils/sendMagicLink");
 const db = require("firebase-admin").database();
+const { v4: uuid } = require("uuid");
 
 router.get("/auth/verify", async (req, res) => {
   const { token } = req.query;
@@ -9,16 +10,49 @@ router.get("/auth/verify", async (req, res) => {
     const { email } = jwt.verify(token, process.env.JWT_SECRET);
 
     // Check if user exists
-    const userRef = db.ref("users");
-    const snapshot = await userRef.orderByChild("email").equalTo(email).once("value");
+
+
+    const usersRef = db.ref("users");
+    const snap = await usersRef.orderByChild("email").equalTo(email).once("value");
 
     let userId;
-    if (snapshot.exists()) {
-      userId = Object.keys(snapshot.val())[0]; // get user ID
+
+
+    if (!snap.exists()) {
+      userId = uuid();
+      const now = Date.now();
+      
+      await db.ref(`users/${userId}`).set({
+        email,
+        createdAt: now,
+        lastLogin: now,
+        subscriptionTier: "Freemium",
+        inventory: {},
+        kyc: {
+          status: "unverified",
+          name: "",
+          idImageUrl: "",
+          selfieUrl: ""
+        },
+        notifications: {
+          history: {}
+        },
+        history: {
+          sales: [],
+          withdrawals: []
+        },
+        settings: {
+          adsEnabled: true,
+          inventoryLowAlerts: true,
+          newProductAlerts: true
+        },
+        referralCode: ""
+      });
     } else {
-      const newUserRef = userRef.push();
-      userId = newUserRef.key;
-      await newUserRef.set({ email, createdAt: Date.now() });
+
+
+
+      userId = Object.keys(snap.val())[0];
     }
 
     // Generate full login token
