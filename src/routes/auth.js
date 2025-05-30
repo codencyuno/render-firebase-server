@@ -63,3 +63,19 @@ router.get("/auth/verify", async (req, res) => {
     res.status(400).send("⛔ Invalid or expired token");
   }
 });
+
+router.get("/users/me", async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const email = decoded.email;
+
+    const snap = await db.ref("users").orderByChild("email").equalTo(email).once("value");
+    if (!snap.exists()) return res.status(404).send("User not found");
+
+    const userData = Object.values(snap.val())[0];
+    res.json(userData);
+  } catch {
+    res.status(401).send("Invalid token");
+  }
+});
