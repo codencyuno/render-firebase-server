@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("firebase-admin").database();
+const db = require("../firebase").database();
 const { authMiddleware } = require("../middlewares/authMiddleware");
 
 router.get("/users/me", authMiddleware, async (req, res) => {
