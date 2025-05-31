@@ -1,21 +1,29 @@
-const router = require("express").Router();
-const db = require("firebase-admin").database();
-const { authMiddleware } = require("../middleware/authMiddleware");
+// routes/products.js
+const express = require('express');
+const router = express.Router();
+const { getDatabase } = require('firebase-admin/database');
+const admin = require('firebase-admin');
 
-router.get("/products", authMiddleware, async (req, res) => {
-  const email = req.user.email;
-  const snap = await db.ref("users").orderByChild("email").equalTo(email).once("value");
-  const [userId, userData] = Object.entries(snap.val())[0];
-
-  const tier = userData.subscriptionTier || "Freemium";
-
-  const allProductsSnap = await db.ref("products").once("value");
-  const products = Object.values(allProductsSnap.val() || {}).filter(p => {
-    const allowedTiers = ["Freemium", "Starter", "Growth", "Pro", "Elite", "Titan"];
-    return allowedTiers.indexOf(tier) >= allowedTiers.indexOf(p.requiredTier);
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(), // or use serviceAccount
+    databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com"
   });
+}
 
-  res.json(products);
+const db = getDatabase();
+
+router.get('/', async (req, res) => {
+  try {
+    const snapshot = await db.ref('productSet').once('value');
+    if (snapshot.exists()) {
+      res.json(snapshot.val());
+    } else {
+      res.status(404).json({ message: 'No product sets found' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
