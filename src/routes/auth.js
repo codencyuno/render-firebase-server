@@ -2,6 +2,7 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const sendMagicLink = require("../utils/sendMagicLink");
+const sendWelcomeEmail = require("../utils/sendWelcomeEmail");
 
 const admin = require("../config/firebase");
 const db = admin.database();
@@ -34,30 +35,40 @@ router.get("/auth/verify", async (req, res) => {
 
       await db.ref(`users/${userId}`).set({
         email,
+        balance: 0,
         createdAt: now,
         lastLogin: now,
-        subscriptionTier: "Freemium",
+        tier: 1,
+        currency: 1,
+        identity: "new",
+        iCount: 0,
+        tProfits: 0,
+        pSold: 0,
+        userName: "New User",
+        country: "United States",
         inventory: {},
-        kyc: {
-          status: "unverified",
-          name: "",
-          idImageUrl: "",
-          selfieUrl: ""
-        },
+        kycStatus: "unverified",
+        notifyStatus: "true",
         notifications: {
-          history: {}
-        },
+          history: {
+            "welcome-message": {
+              title: "🎉 Welcome to Codency!",
+              body: "Your account is live and ready. Start building your portfolio with verified products, watch your ROI grow, and upgrade anytime. Need help? We've got you. Let's go!",
+              timestamp: now,
+              read: false
+            }
+          }
+        },        
+        
         history: {
+          deposits: [],
           sales: [],
           withdrawals: []
         },
-        settings: {
-          adsEnabled: true,
-          inventoryLowAlerts: true,
-          newProductAlerts: true
-        },
         referralCode: ""
       });
+
+      await sendWelcomeEmail(email);
     } else {
       userId = Object.keys(snap.val())[0];
     }
