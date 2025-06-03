@@ -12,7 +12,27 @@ router.get("/users/me", authMiddleware, async (req, res) => {
   if (!snap.exists()) return res.status(404).send("User not found");
 
   const userData = Object.values(snap.val())[0];
-  res.json(userData);
+  const userResponse = {
+    email: userData.email,
+    balance: userData.balance,
+    createdAt: userData.createdAt,
+    lastLogin: userData.lastLogin,
+    tier: userData.tier,
+    currency: userData.currency,
+    identity: userData.identity,
+    iCount: userData.iCount,
+    tProfits: userData.tProfits,
+    pSold: userData.pSold,
+    userName: userData.userName,
+    country: userData.country,
+    inventory: userData.inventory,
+    kycStatus: userData.kycStatus,
+    notifyStatus: userData.notifyStatus,
+    notifications: userData.notifications,
+    history: userData.history,
+    referralCode: userData.referralCode
+  };
+  res.json(userResponse);
 });
 
 module.exports = router;
