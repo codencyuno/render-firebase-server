@@ -71,6 +71,11 @@ router.get("/auth/verify", async (req, res) => {
       await sendWelcomeEmail(email);
     } else {
       userId = Object.keys(snap.val())[0];
+      // Update last login time for existing user
+      const now = Date.now();
+      await db.ref(`users/${userId}`).update({
+        lastLogin: now
+      });
     }
 
     const loginToken = jwt.sign({ email, userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
