@@ -11,6 +11,11 @@ app.use("/api", authRoutes); // mounts /api/auth/request
 app.use("/api", userRoutes);
 app.use('/api/products', productRoutes); // new route
 
+// Ping route for uptime monitoring
+app.get('/ping', (req, res) => {
+  res.status(200).send('OK');
+});
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" },
