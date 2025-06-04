@@ -16,119 +16,60 @@ async function sendMagicLink(email, token) {
     await transporter.sendMail({
       from: `"Codency Uno" <${process.env.ZMAIL_USER}>`,
       to: email,
+      replyTo: 'support@codency.uno',
       subject: "Please verify your email",
+      headers: {
+        'List-Unsubscribe': '<mailto:unsubscribe@codency.uno>, <https://www.codency.uno/unsubscribe>'
+      },
+      text: `Please verify your email by clicking on this link: ${link}. You're almost there — just click to confirm your account. This link expires in 15 minutes.`,
       html: `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codency Uno Verification Link</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 5px;
-            color: #1B1B1B;
-        }
-        .outer-container {
-            background-color: #FAFAF5;
-            padding: 10px 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(176, 176, 176, 0.1);
-        }
-        .logo {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .logo img {
-            width: 120px;
-            height: auto;
-        }
-        .magic-link {
-            text-align: center;
-            margin: 15px 0;
-        }
-        .magic-link a {
-            background-color: #F9D43A;
-            color: #1B1B1B;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-        .magic-link a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(198, 146, 44, 0.3);
-        }
-        .help-text {
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            color: #666;
-            font-size: 14px;
-        }
-        .made-with-love {
-            text-align: center;
-            margin-top: 20px;
-            color: #B0B0B0;
-            font-size: 14px;
-        }
-        .copyright {
-            text-align: center;
-            margin-top: 5px;
-            color: #B0B0B0;
-            font-size: 12px;
-        }
-        img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        h2, p {
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Codency Uno Verification Link</title>
 </head>
-<body>
-    <div class="outer-container">
-        <div class="container">
-            <div class="card">
-                <img src="https://www.codency.uno/assets/images/logo-transparent-bg.png" alt="Codency Uno Logo" style="width: 120px; height: auto; margin-bottom: 15px;">
-                
-                <div class="magic-link">
-                    <h2>Please verify your email</h2>
-                    <p>Click the button below to access your account.</p>
-                    <p>You can manage your content here.</p>
-                    <p><a href="${link}">Verify</a></p>
-                    <p style="color: #B0B0B0; font-size: 13px;">(expires in 15 min)</p>
-                </div>
-
-                <div class="help-text">
-                    Need some help? Just reply to this email.
-                </div>
-            </div>
-            
-            <div class="made-with-love">
-                Made with <span>💜</span> in Delaware
-            </div>
-            <div class="copyright">
-                © Codency.uno
-            </div>
-        </div>
+<body style="margin:0; padding:10px; background-color:#FAFAF5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#1B1B1B;">
+  <div style="max-width:600px; margin:0 auto; background-color:#ffffff; border-radius:10px; padding:30px; box-shadow:0 2px 10px rgba(176,176,176,0.1);">
+    
+    <div style="text-align:center; margin-bottom:20px;">
+      <img src="https://www.codency.uno/assets/images/logo-transparent-bg.png" alt="Codency Uno Logo" style="width:120px; height:auto;">
     </div>
+
+    <h2 style="text-align:center; font-size:20px; margin-bottom:10px;">Welcome to Codency Uno 🚀</h2>
+    <p style="text-align:center; font-size:16px; margin-top:0;">You're almost in! Click the button below to verify your email and activate your account.</p>
+
+    <div style="text-align:center; margin:25px 0;">
+      <a href="${link}" style="background-color:#F9D43A; color:#1B1B1B; padding:12px 30px; text-decoration:none; border-radius:25px; font-weight:bold; display:inline-block; font-size:16px;">
+        Confirm My Account
+      </a>
+    </div>
+
+    <p style="text-align:center; font-size:13px; color:#888;">This link will expire in 15 minutes to keep your account secure.</p>
+
+    <hr style="border:none; border-top:1px solid #eee; margin:30px 0;">
+
+    <p style="font-size:14px; color:#333; line-height:1.6;">
+      Codency Uno helps you earn by reselling premium products from brands like Apple and Nike. Build your store, access inventory, and grow your income — all in one dashboard.
+    </p>
+
+    <p style="font-size:14px; color:#333; line-height:1.6;">
+      If you didn't request this email, you can safely ignore it. But if you're curious, we’d love to have you on board. 👀
+    </p>
+
+    <p style="font-size:14px; text-align:center; margin-top:30px; color:#666;">
+      Need help? Just reply to this email or contact us at <a href="mailto:support@codency.uno" style="color:#666; text-decoration:underline;">support@codency.uno</a>.
+    </p>
+
+    <p style="text-align:center; margin-top:30px; font-size:13px; color:#B0B0B0;">
+      Made with 💜 in Delaware
+    </p>
+    <p style="text-align:center; font-size:12px; color:#B0B0B0; margin-top:5px;">
+      © 2025 Codency Uno. All rights reserved.
+    </p>
+  </div>
 </body>
-</html>`,
+</html>
+`,
     });
     return "Magic link sent! Please check your email.";
   } catch (error) {
