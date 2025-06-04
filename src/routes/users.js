@@ -49,7 +49,7 @@ router.post("/users/update", authMiddleware, async (req, res) => {
   if (!snap.exists()) return res.status(404).send("User not found");
 
   const userKey = Object.keys(snap.val())[0];
-  await db.ref(`users/${userKey}`).update({ userName });
+  await db.ref(`users/${userKey}/userName`).set(userName);
 
   res.status(200).send("Username updated");
 });
