@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 const admin = require("../config/firebase"); // ✅ Correct relative path
@@ -33,6 +34,39 @@ router.get("/users/me", authMiddleware, async (req, res) => {
     referralCode: userData.referralCode
   };
   res.json(userResponse);
+});
+
+// ✅ Update userName (step 2 of onboarding)
+router.post("/users/update", authMiddleware, async (req, res) => {
+  const { email } = req.user;
+  const { userName } = req.body;
+
+  if (!userName) return res.status(400).send("userName is required");
+
+  const usersRef = db.ref("users");
+  const snap = await usersRef.orderByChild("email").equalTo(email).once("value");
+
+  if (!snap.exists()) return res.status(404).send("User not found");
+
+  const userKey = Object.keys(snap.val())[0];
+  await db.ref(`users/${userKey}`).update({ userName });
+
+  res.status(200).send("Username updated");
+});
+
+// ✅ Mark onboarding complete (step 3)
+router.post("/users/onboard", authMiddleware, async (req, res) => {
+  const { email } = req.user;
+
+  const usersRef = db.ref("users");
+  const snap = await usersRef.orderByChild("email").equalTo(email).once("value");
+
+  if (!snap.exists()) return res.status(404).send("User not found");
+
+  const userKey = Object.keys(snap.val())[0];
+  await db.ref(`users/${userKey}`).update({ identity: "old" });
+
+  res.status(200).send("Onboarding complete");
 });
 
 module.exports = router;
