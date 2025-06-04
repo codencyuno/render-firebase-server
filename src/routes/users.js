@@ -68,4 +68,21 @@ router.post("/users/onboard", authMiddleware, async (req, res) => {
   res.status(200).send("Onboarding complete");
 });
 
+// Currency Update
+router.post("/users/currency", authMiddleware, async (req, res) => {
+  const { email } = req.user;
+  const { currency } = req.body;
+
+  if (!currency) return res.status(400).send("currency is required");
+
+  const usersRef = db.ref("users");
+  const snap = await usersRef.orderByChild("email").equalTo(email).once("value");
+
+  if (!snap.exists()) return res.status(404).send("User not found");
+
+  const userKey = Object.keys(snap.val())[0];
+  await db.ref(`users/${userKey}`).update({ currency: currency });
+  res.status(200).send("Currency updated");
+});
+
 module.exports = router;
