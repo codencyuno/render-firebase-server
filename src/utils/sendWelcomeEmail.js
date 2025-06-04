@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 async function sendWelcomeEmail(email) {
   try {
     await transporter.sendMail({
-      from: `"Codency Uno" <${process.env.ZMAIL_USER}>`,
+      from: `"Codency.Uno" <${process.env.ZMAIL_USER}>`,
       to: email,
       subject: "Welcome to Codency 🎉 Your resale journey starts now!",
       text: `Welcome to Codency Uno!
