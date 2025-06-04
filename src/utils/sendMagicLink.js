@@ -14,7 +14,7 @@ async function sendMagicLink(email, token) {
   const link = `${process.env.BACKEND_URL}/api/auth/verify?token=${token}`;
   try {
     await transporter.sendMail({
-      from: `"Codency Uno" <${process.env.ZMAIL_USER}>`,
+      from: `"Codency.Uno" <${process.env.ZMAIL_USER}>`,
       to: email,
       replyTo: 'support@codency.uno',
       subject: "Please verify your email",
