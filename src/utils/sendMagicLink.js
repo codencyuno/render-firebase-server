@@ -1,34 +1,18 @@
-const nodemailer = require("nodemailer");
+// src/sendMagicLink.js
+const { Resend } = require("resend");
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.zoho.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.ZMAIL_USER,
-    pass: process.env.ZMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendMagicLink(email, token) {
   const link = `${process.env.BACKEND_URL}/api/auth/verify?token=${token}`;
-  try {
-    await transporter.sendMail({
-      from: `"Codency.Uno" <${process.env.ZMAIL_USER}>`,
-      to: email,
-      replyTo: 'support@codency.uno',
-      subject: "Please verify your email",
-      headers: {
-        'List-Unsubscribe': '<mailto:unsubscribe@codency.uno>, <https://www.codency.uno/unsubscribe>'
-      },
-      text: `Please verify your email by clicking on this link: ${link}. You're almost there — just click to confirm your account. This link expires in 15 minutes.`,
-      html: `<!DOCTYPE html>
+
+  const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Codency Uno Verification Link</title>
 </head>
-<body style="margin:0; padding:10px; background-color:#FAFAF5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#1B1B1B;">
+<body style="margin:0; padding:10px; background-color:#FAFAF5; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#1B1B1B;">
   <div style="max-width:600px; margin:0 auto; background-color:#ffffff; border-radius:10px; padding:30px; box-shadow:0 2px 10px rgba(176,176,176,0.1);">
     
     <div style="text-align:center; margin-bottom:20px;">
@@ -68,9 +52,17 @@ async function sendMagicLink(email, token) {
     </p>
   </div>
 </body>
-</html>
-`,
+</html>`;
+
+  try {
+    await resend.emails.send({
+      from: "Codency Uno <noreply@codency.uno>",
+      to: email,
+      subject: "Please verify your email",
+      html,
     });
+
+    console.log("Magic link sent successfully to:", email);
     return "Magic link sent! Please check your email.";
   } catch (error) {
     console.error("Error sending magic link:", error);
